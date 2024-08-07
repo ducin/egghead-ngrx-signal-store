@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { Employee } from '../dto';
+import { Employee } from '../model';
 
 @Pipe({
   standalone: true,

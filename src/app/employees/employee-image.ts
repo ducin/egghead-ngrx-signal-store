@@ -1,6 +1,6 @@
 import { Component, computed, input, Input } from '@angular/core';
 
-import { Employee } from '../dto';
+import { Employee } from '../model';
 import { apiURL } from '../api.config';
 
 @Component({

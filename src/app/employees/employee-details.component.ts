@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { Employee } from '../dto';
+import { Employee } from '../model';
 import { EmployeeImageComponent } from './employee-image';
 import { LoaderComponent } from '../loader.component';
 
