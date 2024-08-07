@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 
 import { EmployeesHTTPService } from './employeesHTTP.service';
-import { Employee } from '../dto';
+import { Employee } from '../model';
 
 @Injectable({
   providedIn: 'root'
