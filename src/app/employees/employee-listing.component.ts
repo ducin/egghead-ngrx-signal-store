@@ -18,8 +18,10 @@ import { EmployeesStore } from './employee-store';
     LoaderComponent,
   ],
   template: `
-    {{ store.isLoading() | json }}
-    {{ store.error() | json }}
+    <!-- {{ store.filters() | json }} -->
+    <!-- {{ store.filters.name() | json }} -->
+    <!-- {{ store.filters.salary().from | json }} -->
+    <!-- {{ store.filters.salary.from() | json }} -->
     @if(store.isLoading()) {
     <loader />
     } @if (store.items(); as employees) {
