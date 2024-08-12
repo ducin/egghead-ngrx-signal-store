@@ -1,8 +1,11 @@
 import { signalStore, withState } from '@ngrx/signals';
 import { Employee } from '../model';
+import { mockEmployees } from './employees.mocks';
 
 type EmployeeState = {
   items: Employee[];
+  isLoading: boolean;
+  error: Error | null;
   filters: {
     name: string;
     salary: Record<'from' | 'to', number>;
@@ -10,7 +13,9 @@ type EmployeeState = {
 };
 
 const initialState: EmployeeState = {
-  items: [],
+  items: mockEmployees,
+  isLoading: false,
+  error: null,
   filters: {
     name: '',
     salary: {

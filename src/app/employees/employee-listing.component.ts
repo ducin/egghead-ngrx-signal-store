@@ -20,9 +20,9 @@ import { EmployeesStore } from './employee-store';
     LoaderComponent,
   ],
   template: `
-    @if(isLoading) {
+    @if(store.isLoading()) {
     <loader />
-    } @if (employees$ | async; as employees) {
+    } @if (store.items(); as employees) {
     <div>
       count: {{ employees.length }}
       <ul>
@@ -44,23 +44,23 @@ import { EmployeesStore } from './employee-store';
 export class EmployeeListingComponent {
   store = inject(EmployeesStore);
 
-  employees$!: Observable<Employee[]>;
-  #employeeHTTP = inject(EmployeesHTTPService);
+  // employees$!: Observable<Employee[]>;
+  // #employeeHTTP = inject(EmployeesHTTPService);
 
-  isLoading = true;
-  error: Error | null = null;
+  // isLoading = true;
+  // error: Error | null = null;
 
-  ngOnInit() {
-    this.employees$ = this.#employeeHTTP.getEmployees().pipe(
-      tap(() => {
-        this.error = null;
-        this.isLoading = true;
-      }),
-      finalize(() => (this.isLoading = false)),
-      catchError((err) => {
-        this.error = err;
-        return NEVER;
-      })
-    );
-  }
+  // ngOnInit() {
+  //   this.employees$ = this.#employeeHTTP.getEmployees().pipe(
+  //     tap(() => {
+  //       this.error = null;
+  //       this.isLoading = true;
+  //     }),
+  //     finalize(() => (this.isLoading = false)),
+  //     catchError((err) => {
+  //       this.error = err;
+  //       return NEVER;
+  //     })
+  //   );
+  // }
 }
