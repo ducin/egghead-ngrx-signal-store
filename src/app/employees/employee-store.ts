@@ -21,6 +21,7 @@ const initialState: EmployeeState = {
 };
 
 export const EmployeesStore = signalStore(
+  // { providedIn: 'root' },
   withState(initialState)
   // withA(),
   // withB(),

@@ -1,17 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { EmployeesStore } from './employee-store';
 
 @Component({
   selector: 'employee-page',
   standalone: true,
-  imports: [
-    RouterModule,
-  ],
+  providers: [EmployeesStore],
+  imports: [RouterModule],
   template: `
-<h1>Our Employees</h1>
-<router-outlet></router-outlet>
+    <h1>Our Employees</h1>
+    <router-outlet></router-outlet>
   `,
-  styles: [``]
+  styles: [``],
 })
-export class EmployeePageComponent {
-}
+export class EmployeePageComponent {}
