@@ -1,9 +1,6 @@
-import { Component, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { catchError, finalize, NEVER, Observable, tap } from 'rxjs';
-import { Employee } from '../model';
-import { EmployeesHTTPService } from './employeesHTTP.service';
 import { NameAndTitlePipe } from './name-and-title.pipe';
 import { FlagPipe } from './flag.pipe';
 import { LoaderComponent } from '../loader.component';
@@ -14,12 +11,15 @@ import { EmployeesStore } from './employee-store';
   standalone: true,
   imports: [
     RouterModule,
-    CommonModule,
+    // CommonModule,
+    JsonPipe,
     NameAndTitlePipe,
     FlagPipe,
     LoaderComponent,
   ],
   template: `
+    {{ store.isLoading() | json }}
+    {{ store.error() | json }}
     @if(store.isLoading()) {
     <loader />
     } @if (store.items(); as employees) {
