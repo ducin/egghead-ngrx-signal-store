@@ -26,7 +26,7 @@ import { EmployeesStore } from './employee-store';
     <loader />
     } @if (store.items(); as employees) {
     <div>
-      count: {{ employees.length }}
+      count: {{ store.count() }}
       <ul>
         @for (e of employees; track e) {
         <li>
