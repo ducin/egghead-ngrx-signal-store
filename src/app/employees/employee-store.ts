@@ -70,6 +70,20 @@ export const EmployeesStore = signalStore(
         filters: { ...state.filters, name },
       }));
     },
+    updateFiltersSalary(value: Partial<EmployeeState['filters']['salary']>) {
+      // patchState(store, (state) => ({
+      //   filters: {
+      //     ...state.filters,
+      //     salary: { ...state.filters.salary, ...value },
+      //   },
+      // }));
+      patchState(store, (state) =>
+        produce(state, (draft) => {
+          Object.assign(draft.filters.salary, value);
+        })
+      );
+      // check out: ngrx-immer
+    },
   }))
   // withA(),
   // withB(),

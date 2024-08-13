@@ -28,6 +28,22 @@ import { EmployeesStore } from './employee-store';
       [value]="store.filters.name()"
       (input)="updateName($event)"
     />
+
+    <input
+      type="number"
+      step="1000"
+      placeholder="salary from"
+      [value]="store.filters.salary.from()"
+      (input)="updateSalaryFrom($event)"
+    />
+
+    <input
+      type="number"
+      step="1000"
+      placeholder="salary to"
+      [value]="store.filters.salary.to()"
+      (input)="updateSalaryTo($event)"
+    />
     @if(store.isLoading()) {
     <loader />
     } @if (store.items(); as employees) {
@@ -55,6 +71,16 @@ export class EmployeeListingComponent {
   updateName(event: Event) {
     const newValue = (event.target as HTMLInputElement).value;
     this.store.updateFiltersName(newValue);
+  }
+
+  updateSalaryFrom(event: Event) {
+    const newValue = parseInt((event.target as HTMLInputElement).value);
+    this.store.updateFiltersSalary({ from: newValue });
+  }
+
+  updateSalaryTo(event: Event) {
+    const newValue = parseInt((event.target as HTMLInputElement).value);
+    this.store.updateFiltersSalary({ to: newValue });
   }
 
   // employees$!: Observable<Employee[]>;
