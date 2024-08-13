@@ -5,6 +5,7 @@ import { NameAndTitlePipe } from './name-and-title.pipe';
 import { FlagPipe } from './flag.pipe';
 import { LoaderComponent } from '../loader.component';
 import { EmployeesStore } from './employee-store';
+import { EmployeesFiltersComponent } from './employees-filters/employees-filters.component';
 
 @Component({
   selector: 'employee-listing',
@@ -16,45 +17,14 @@ import { EmployeesStore } from './employee-store';
     NameAndTitlePipe,
     FlagPipe,
     LoaderComponent,
+    EmployeesFiltersComponent,
   ],
   template: `
     <!-- {{ store.filters() | json }} -->
     <!-- {{ store.filters.name() | json }} -->
     <!-- {{ store.filters.salary().from | json }} -->
     <!-- {{ store.filters.salary.from() | json }} -->
-    <label for="name">
-      <input
-        type="text"
-        placeholder="name"
-        id="name"
-        [value]="store.filters.name()"
-        (input)="updateName($event)"
-      />
-    </label>
-
-    <label for="salaryFrom">
-      <input
-        type="number"
-        placeholder="salary from"
-        id="salaryFrom"
-        [value]="store.filters.salary.from()"
-        (input)="updateSalaryFrom($event)"
-        step="1000"
-      />
-    </label>
-
-    <label for="salaryTo">
-      <input
-        type="number"
-        placeholder="salary to"
-        id="salaryTo"
-        [value]="store.filters.salary.to()"
-        (input)="updateSalaryTo($event)"
-        step="1000"
-      />
-    </label>
-
-    <button (click)="store.clearFilters()">clear filters</button>
+    <employees-filters />
 
     @if(store.isLoading()) {
     <loader />
@@ -79,21 +49,6 @@ import { EmployeesStore } from './employee-store';
 })
 export class EmployeeListingComponent {
   store = inject(EmployeesStore);
-
-  updateName(event: Event) {
-    const newValue = (event.target as HTMLInputElement).value;
-    this.store.updateFiltersName(newValue);
-  }
-
-  updateSalaryFrom(event: Event) {
-    const newValue = parseInt((event.target as HTMLInputElement).value);
-    this.store.updateFiltersSalary({ from: newValue });
-  }
-
-  updateSalaryTo(event: Event) {
-    const newValue = parseInt((event.target as HTMLInputElement).value);
-    this.store.updateFiltersSalary({ to: newValue });
-  }
 
   // employees$!: Observable<Employee[]>;
   // #employeeHTTP = inject(EmployeesHTTPService);
