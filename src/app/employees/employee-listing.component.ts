@@ -22,28 +22,40 @@ import { EmployeesStore } from './employee-store';
     <!-- {{ store.filters.name() | json }} -->
     <!-- {{ store.filters.salary().from | json }} -->
     <!-- {{ store.filters.salary.from() | json }} -->
-    <input
-      type="text"
-      placeholder="name search"
-      [value]="store.filters.name()"
-      (input)="updateName($event)"
-    />
+    <label for="name">
+      <input
+        type="text"
+        placeholder="name"
+        id="name"
+        [value]="store.filters.name()"
+        (input)="updateName($event)"
+      />
+    </label>
 
-    <input
-      type="number"
-      step="1000"
-      placeholder="salary from"
-      [value]="store.filters.salary.from()"
-      (input)="updateSalaryFrom($event)"
-    />
+    <label for="salaryFrom">
+      <input
+        type="number"
+        placeholder="salary from"
+        id="salaryFrom"
+        [value]="store.filters.salary.from()"
+        (input)="updateSalaryFrom($event)"
+        step="1000"
+      />
+    </label>
 
-    <input
-      type="number"
-      step="1000"
-      placeholder="salary to"
-      [value]="store.filters.salary.to()"
-      (input)="updateSalaryTo($event)"
-    />
+    <label for="salaryTo">
+      <input
+        type="number"
+        placeholder="salary to"
+        id="salaryTo"
+        [value]="store.filters.salary.to()"
+        (input)="updateSalaryTo($event)"
+        step="1000"
+      />
+    </label>
+
+    <button (click)="store.clearFilters()">clear filters</button>
+
     @if(store.isLoading()) {
     <loader />
     } @if (store.items(); as employees) {

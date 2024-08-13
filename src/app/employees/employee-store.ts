@@ -84,6 +84,21 @@ export const EmployeesStore = signalStore(
       );
       // check out: ngrx-immer
     },
+    clearFilters() {
+      patchState(
+        store,
+        (state) => ({ filters: { ...state.filters, name: '' } }),
+        (state) => ({
+          filters: {
+            ...state.filters,
+            salary: {
+              from: 0,
+              to: 10_000,
+            },
+          },
+        })
+      );
+    },
   }))
   // withA(),
   // withB(),
