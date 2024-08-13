@@ -22,6 +22,12 @@ import { EmployeesStore } from './employee-store';
     <!-- {{ store.filters.name() | json }} -->
     <!-- {{ store.filters.salary().from | json }} -->
     <!-- {{ store.filters.salary.from() | json }} -->
+    <input
+      type="text"
+      placeholder="name search"
+      [value]="store.filters.name()"
+      (input)="updateName($event)"
+    />
     @if(store.isLoading()) {
     <loader />
     } @if (store.items(); as employees) {
@@ -45,6 +51,11 @@ import { EmployeesStore } from './employee-store';
 })
 export class EmployeeListingComponent {
   store = inject(EmployeesStore);
+
+  updateName(event: Event) {
+    const newValue = (event.target as HTMLInputElement).value;
+    this.store.updateFiltersName(newValue);
+  }
 
   // employees$!: Observable<Employee[]>;
   // #employeeHTTP = inject(EmployeesHTTPService);

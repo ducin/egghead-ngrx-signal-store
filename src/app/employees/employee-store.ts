@@ -1,7 +1,14 @@
-import { signalStore, withComputed, withState } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 import { Employee } from '../model';
 import { mockEmployees } from './employees.mocks';
 import { computed } from '@angular/core';
+import { produce } from 'immer';
 
 type EmployeeState = {
   loadedItems: Employee[];
@@ -18,7 +25,7 @@ const initialState: EmployeeState = {
   isLoading: false,
   error: null,
   filters: {
-    name: 'Bert',
+    name: '',
     salary: {
       from: 0,
       to: 10_000,
@@ -56,6 +63,13 @@ export const EmployeesStore = signalStore(
 
       return result;
     }),
+  })),
+  withMethods((store) => ({
+    updateFiltersName(name: EmployeeState['filters']['name']) {
+      patchState(store, (state) => ({
+        filters: { ...state.filters, name },
+      }));
+    },
   }))
   // withA(),
   // withB(),
