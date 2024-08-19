@@ -11,7 +11,7 @@ import { computed } from '@angular/core';
 import { produce } from 'immer';
 
 type EmployeeState = {
-  loadedItems: Employee[];
+  _loadedItems: Employee[];
   isLoading: boolean;
   error: Error | null;
   filters: {
@@ -21,7 +21,7 @@ type EmployeeState = {
 };
 
 const initialState: EmployeeState = {
-  loadedItems: mockEmployees,
+  _loadedItems: mockEmployees,
   isLoading: false,
   error: null,
   filters: {
@@ -36,12 +36,12 @@ const initialState: EmployeeState = {
 export const EmployeesStore = signalStore(
   // { providedIn: 'root' },
   withState(initialState),
-  withComputed(({ loadedItems, filters }) => ({
+  withComputed(({ _loadedItems, filters }) => ({
     count: computed(() => {
-      return loadedItems().length;
+      return _loadedItems().length;
     }),
     items: computed(() => {
-      let result = loadedItems();
+      let result = _loadedItems();
 
       if (filters.name()) {
         const search = filters.name().toLowerCase();
