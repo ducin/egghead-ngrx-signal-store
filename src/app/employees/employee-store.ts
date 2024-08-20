@@ -106,26 +106,35 @@ export const EmployeesStore = signalStore(
       logger.logMessage('clear finished');
     },
   })),
+  withMethods((store) => ({
+    _setLoading() {
+      patchState(store, { isLoading: true, error: null, _loadedItems: [] });
+    },
+    _setError(error: Error) {
+      patchState(store, { isLoading: false, error, _loadedItems: [] });
+    },
+    _setItems(_loadedItems: Employee[]) {
+      patchState(store, {
+        _loadedItems,
+        isLoading: false,
+        error: null,
+      });
+    },
+  })),
   withMethods((store, employeesHTTP = inject(EmployeesHTTPService)) => ({
     // all things rxjs
     // IMPERATIVELY: value
     // REACTIVE: signal, stream
     loadEmployees: rxMethod<void>(
       pipe(
-        tap(() => {
-          patchState(store, { isLoading: true, error: null, _loadedItems: [] });
-        }), // loading
+        tap(() => store._setLoading()),
         switchMap(() => employeesHTTP.getEmployees()),
         tap({
           next(items) {
-            patchState(store, {
-              _loadedItems: items,
-              isLoading: false,
-              error: null,
-            });
+            store._setItems(items);
           },
           error(error) {
-            patchState(store, { isLoading: false, error, _loadedItems: [] });
+            store._setError(error);
           },
         }) // items, error
       )
