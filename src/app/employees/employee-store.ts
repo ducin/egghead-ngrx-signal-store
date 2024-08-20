@@ -7,8 +7,9 @@ import {
 } from '@ngrx/signals';
 import { Employee } from '../model';
 import { mockEmployees } from './employees.mocks';
-import { computed } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { produce } from 'immer';
+import { LoggerService } from '../logger.service';
 
 type EmployeeState = {
   _loadedItems: Employee[];
@@ -36,7 +37,7 @@ const initialState: EmployeeState = {
 export const EmployeesStore = signalStore(
   // { providedIn: 'root' },
   withState(initialState),
-  withComputed(({ _loadedItems, filters }) => ({
+  withComputed(({ _loadedItems, filters }, logger = inject(LoggerService)) => ({
     count: computed(() => {
       return _loadedItems().length;
     }),
@@ -64,7 +65,7 @@ export const EmployeesStore = signalStore(
       return result;
     }),
   })),
-  withMethods((store) => ({
+  withMethods((store, logger = inject(LoggerService)) => ({
     updateFiltersName(name: EmployeeState['filters']['name']) {
       patchState(store, (state) => ({
         filters: { ...state.filters, name },
@@ -85,6 +86,7 @@ export const EmployeesStore = signalStore(
       // check out: ngrx-immer
     },
     clearFilters() {
+      logger.logMessage('clear started');
       patchState(
         store,
         (state) => ({ filters: { ...state.filters, name: '' } }),
@@ -98,6 +100,7 @@ export const EmployeesStore = signalStore(
           },
         })
       );
+      logger.logMessage('clear finished');
     },
   }))
   // withA(),
