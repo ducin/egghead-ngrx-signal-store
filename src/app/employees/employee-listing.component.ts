@@ -25,6 +25,7 @@ import { EmployeesFiltersComponent } from './employees-filters/employees-filters
     <!-- {{ store.filters.salary().from | json }} -->
     <!-- {{ store.filters.salary.from() | json }} -->
     <employees-filters />
+    <button (click)="store.loadEmployees()">reload</button>
 
     @if(store.isLoading()) {
     <loader />

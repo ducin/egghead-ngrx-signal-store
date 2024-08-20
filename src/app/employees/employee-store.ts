@@ -10,6 +10,9 @@ import { mockEmployees } from './employees.mocks';
 import { computed, inject } from '@angular/core';
 import { produce } from 'immer';
 import { LoggerService } from '../logger.service';
+import { EmployeesHTTPService } from './employeesHTTP.service';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { pipe, switchMap, tap } from 'rxjs';
 
 type EmployeeState = {
   _loadedItems: Employee[];
@@ -22,7 +25,7 @@ type EmployeeState = {
 };
 
 const initialState: EmployeeState = {
-  _loadedItems: mockEmployees,
+  _loadedItems: [],
   isLoading: false,
   error: null,
   filters: {
@@ -102,6 +105,31 @@ export const EmployeesStore = signalStore(
       );
       logger.logMessage('clear finished');
     },
+  })),
+  withMethods((store, employeesHTTP = inject(EmployeesHTTPService)) => ({
+    // all things rxjs
+    // IMPERATIVELY: value
+    // REACTIVE: signal, stream
+    loadEmployees: rxMethod<void>(
+      pipe(
+        tap(() => {
+          patchState(store, { isLoading: true, error: null, _loadedItems: [] });
+        }), // loading
+        switchMap(() => employeesHTTP.getEmployees()),
+        tap({
+          next(items) {
+            patchState(store, {
+              _loadedItems: items,
+              isLoading: false,
+              error: null,
+            });
+          },
+          error(error) {
+            patchState(store, { isLoading: false, error, _loadedItems: [] });
+          },
+        }) // items, error
+      )
+    ),
   }))
   // withA(),
   // withB(),
