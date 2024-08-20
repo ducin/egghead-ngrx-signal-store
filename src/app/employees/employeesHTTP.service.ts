@@ -16,6 +16,20 @@ export type EmployeeCriteria = {
 export class EmployeesHTTPService {
   #http = inject(HttpClient);
 
+  deleteEmployee(id: Employee['id']) {
+    return this.#http.delete(`${apiURL}/employees/${id}`);
+  }
+
+  getEmployee(id: Employee['id']) {
+    return this.#http.get<Employee>(`${apiURL}/employees/${id}`);
+  }
+
+  getCount(criteria: EmployeeCriteria = {}) {
+    return this.#http.get<number>(`${apiURL}/employees/count`, {
+      params: this.#createHttpParams(criteria, 1, 1),
+    });
+  }
+
   #createHttpParams(
     criteria: EmployeeCriteria,
     page: number,
@@ -26,27 +40,27 @@ export class EmployeesHTTPService {
     });
   }
 
-  deleteEmployee(id: Employee['id']) {
-    return this.#http.delete(`${apiURL}/employees/${id}`);
-  }
-
-  getEmployee(id: Employee['id']) {
-    return this.#http.get<Employee>(`${apiURL}/employees/${id}`);
-  }
-
   #getPage(criteria: EmployeeCriteria = {}, page: number = 1, pageSize = 50) {
     return this.#http.get<Employee[]>(`${apiURL}/employees`, {
       params: this.#createHttpParams(criteria, page, pageSize),
     });
   }
 
-  getCount(criteria: EmployeeCriteria = {}) {
-    return this.#http.get<number>(`${apiURL}/employees/count`, {
-      params: this.#createHttpParams(criteria, 1, 1),
-    });
-  }
-
   getEmployees(criteria: EmployeeCriteria = {}) {
     return this.#getPage(criteria);
+  }
+
+  async fetchEmployees(
+    criteria: EmployeeCriteria = {},
+    page = 1,
+    pageSize = 50
+  ) {
+    const query = new URLSearchParams({
+      ...criteria,
+      _limit: pageSize.toString(),
+      _page: page.toString(),
+    }).toString();
+    const response = await fetch(`${apiURL}/employees?${query}`);
+    return response.json() as Promise<Employee[]>;
   }
 }

@@ -140,11 +140,24 @@ export const EmployeesStore = signalStore(
         }) // items, error
       )
     ),
+    async loadEmployees_AA() {
+      store._setLoading();
+      try {
+        const items = await employeesHTTP.fetchEmployees();
+        store._setItems(items);
+      } catch (err) {
+        let error =
+          err instanceof Error
+            ? err
+            : new Error('Unknown Error', { cause: err });
+        store._setError(error);
+      }
+    },
   })),
   withHooks({
     onInit(store) {
       console.log('init');
-      store.loadEmployees();
+      store.loadEmployees_AA();
     },
     onDestroy(store) {
       console.log('destroy');
