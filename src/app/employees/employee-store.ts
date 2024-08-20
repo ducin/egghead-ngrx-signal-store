@@ -14,6 +14,7 @@ import { LoggerService } from '../logger.service';
 import { EmployeesHTTPService } from './employeesHTTP.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
+import { withDevtools } from '@angular-architects/ngrx-toolkit';
 
 type EmployeeState = {
   _loadedItems: Employee[];
@@ -40,6 +41,7 @@ const initialState: EmployeeState = {
 
 export const EmployeesStore = signalStore(
   // { providedIn: 'root' },
+  withDevtools('employees'),
   withState(initialState),
   withComputed(({ _loadedItems, filters }, logger = inject(LoggerService)) => ({
     count: computed(() => {
