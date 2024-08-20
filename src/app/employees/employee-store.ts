@@ -2,6 +2,7 @@ import {
   patchState,
   signalStore,
   withComputed,
+  withHooks,
   withMethods,
   withState,
 } from '@ngrx/signals';
@@ -139,7 +140,16 @@ export const EmployeesStore = signalStore(
         }) // items, error
       )
     ),
-  }))
+  })),
+  withHooks({
+    onInit(store) {
+      console.log('init');
+      store.loadEmployees();
+    },
+    onDestroy(store) {
+      console.log('destroy');
+    },
+  })
   // withA(),
   // withB(),
   // withC()
